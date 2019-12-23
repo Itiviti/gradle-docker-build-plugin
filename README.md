@@ -4,15 +4,40 @@
 Plugin for building docker images
 
 ## Usage
-* `docker-build` does not add any task, it is useful if you would like to add build tags manually
-* images can be pushed by `publish` task
+* plugin does not add any task, it is useful if you would like to add build tags manually
+* All images built can be pushed by `publish` task
+
+To apply the plugin:
+```groovy
+plugins {
+    id 'com.itiviti.docker-build' version '1.0.0'
+}
+```
+
+or
 
 ```groovy
-apply 'docker-base'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.itiviti.gradle:gradle-docker-build-plugin:1.0.0'
+    }
+}
+
+apply 'com.itiviti.docker-build'
+```
+
+or
+
+```groovy
+
 
 docker {
     registry = 'your registry host' // optional
-    imageName = 'your image name' // applies to all DockerBuildTask if set
+    imageName = 'your image name'   // applies to all DockerBuildTask if set
 }
 
 tasks.register('dockerBuildLTS', com.itiviti.gradle.DockerBuildTask) {
