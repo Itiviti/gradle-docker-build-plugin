@@ -1,31 +1,41 @@
 plugins {
-    id 'nu.studer.plugindev' version '1.0.12'
-    id 'net.researchgate.release' version '2.8.0'
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.11.0'
+    id 'groovy'
 }
 
-apply plugin: 'groovy'
+repositories {
+    jcenter()
+}
 
 group = 'com.itiviti.gradle'
 description 'gradle-docker-build-plugin is a Gradle plugin for build and publish images'
 
-bintray {
-    pkg.repo = 'gradle-plugins'
-    pkg.version.gpg.sign = true
-    pkg.userOrg = 'ullink'
+gradlePlugin {
+    plugins {
+        docker {
+            id = 'com.itiviti.docker-build'
+            implementationClass = 'com.itiviti.gradle.DockerBuildPlugin'
+        }
+    }
 }
 
-plugindev {
-    pluginId = 'com.itiviti.docker-build'
-    pluginImplementationClass 'com.itiviti.gradle.DockerBuildPlugin'
-    pluginDescription project.description
-    pluginLicenses 'Apache-2.0'
-    pluginTags 'gradle', 'plugin', 'docker'
-    authorId 'ngyukman'
-    authorName 'Ng Yuk Man'
-    authorEmail 'ngyukman@gmail.com'
-    projectUrl "https://github.com/Itiviti/${project.name}"
-    projectInceptionYear '2019'
-    done()
+pluginBundle {
+    website = "https://github.com/Itiviti/${project.name}"
+    vcsUrl = "https://github.com/Itiviti/${project.name}"
+    description = 'gradle-docker-build-plugin is a Gradle plugin for build and publish images'
+    tags = ['docker', 'gradle', 'gradle-plugin']
+
+    plugins {
+        docker {
+            displayName = 'Gradle Docker build plugin'
+        }
+    }
+
+    mavenCoordinates {
+        groupId = 'com.itiviti.gradle'
+        artifactId = project.name
+    }
 }
 
-afterReleaseBuild.dependsOn project.tasks.bintrayUpload
+afterReleaseBuild.dependsOn project.tasks.publishPlugins
