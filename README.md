@@ -1,5 +1,5 @@
 # gradle-docker-build-plugin
-[![Build Status](https://travis-ci.org/Itiviti/gradle-docker-build-plugin.svg?branch=master)](https://travis-ci.org/Itiviti/gradle-docker-build-plugin)  [![GitHub license](https://img.shields.io/github/license/Itiviti/gradle-opencover-plugin.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Build Status](https://dev.azure.com/ngyukman/ngyukman/_apis/build/status/Itiviti.gradle-docker-build-plugin?branchName=master)](https://dev.azure.com/ngyukman/ngyukman/_build/latest?definitionId=2&branchName=master)  [![GitHub license](https://img.shields.io/github/license/Itiviti/gradle-docker-build-plugin.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 Plugin for building docker images
 
