@@ -9,7 +9,7 @@ import javax.annotation.Nullable
 class DockerBuildTask extends AbstractExecTask {
 
     @Input
-    Property<String> imageName
+    final Property<String> imageName
 
     @Input
     List<String> tags = []

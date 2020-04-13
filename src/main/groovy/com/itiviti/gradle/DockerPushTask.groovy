@@ -6,10 +6,10 @@ import org.gradle.api.tasks.Input
 
 class DockerPushTask extends AbstractExecTask {
     @Input
-    Property<String> imageName
+    final Property<String> imageName
 
     @Input
-    Property<String> tag
+    final Property<String> tag
 
     DockerPushTask() {
         super(DockerPushTask)
