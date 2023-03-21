@@ -10,11 +10,16 @@ class DockerBuildPlugin implements Plugin<Project> {
         project.apply plugin: 'base'
         project.apply plugin: 'publishing'
 
-        def extension = project.extensions.create('docker', DockerPluginExtension)
+        def extension = project.extensions.create('docker', DockerPluginExtension, project)
         extension.dockerRegistry = project.properties.dockerRepo
+
+        project.tasks.withType(DockerLintTask) { DockerLintTask lintTask ->
+            lintTask.dockerFile.set(project.provider { extension.DockerFile })
+        }
 
         project.tasks.withType(DockerBuildTask) { DockerBuildTask buildTask ->
             project.tasks.assemble.dependsOn(buildTask)
+            buildTask.dependsOn(DockerLintTask)
             buildTask.imageName.set(project.provider { extension.fullImageName })
         }
 
