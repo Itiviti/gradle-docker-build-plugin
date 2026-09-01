@@ -1,28 +1,34 @@
 package com.itiviti.gradle
 
-import org.gradle.api.tasks.AbstractExecTask
+import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
-import org.gradle.internal.os.OperatingSystem
+import org.gradle.process.ExecOperations
 
 import javax.annotation.Nullable
+import javax.inject.Inject
 
-class DockerLintTask extends AbstractExecTask {
+class DockerLintTask extends DefaultTask {
     @InputFile
     @Nullable
     @Optional
     File dockerFile
 
-    DockerLintTask() {
-        super(DockerLintTask)
+    private final ExecOperations execOperations
+
+    @Inject
+    DockerLintTask(ExecOperations execOperations) {
+        this.execOperations = execOperations
     }
 
-    @Override
-    void exec(){
-        if (OperatingSystem.current().isWindows()) {
-            commandLine "powershell", "-c", "cat", "$dockerFile.absolutePath", "|", "docker", "run", "--rm", "-i", "hadolint/hadolint"
-        } else {
-            commandLine 'docker', 'run', '--rm', '-i', 'hadolint/hadolint', '<', "$dockerFile.absolutePath"
+    @org.gradle.api.tasks.TaskAction
+    void lint() {
+        execOperations.exec {
+            executable 'docker'
+            args 'run', '--rm', '-i', 'hadolint/hadolint'
+            if (dockerFile) {
+                standardInput = dockerFile.newInputStream()
+            }
         }
     }
 }
